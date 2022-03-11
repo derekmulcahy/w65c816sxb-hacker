@@ -1,18 +1,13 @@
 #===============================================================================
-# WDC Tools Assembler Definitions
+# CC65 Tools Assembler Definitions
 #-------------------------------------------------------------------------------
 
-AS			=	wdc816as
-
-LD			=	wdcln
-
-RM			=	erase
-
-AS_FLAGS	=	-g -l -DW65C816SXB
-
-LD_FLAGS	=	-g -t -C0300
-
-DEBUG		=	wdcdb.exe
+AS			=	ca65
+LD			=	cl65
+RM			=	rm
+AS_FLAGS   += --listing $(@:.obj=.lst) -o $@ -DW65C816SXB
+LD_FLAGS	=  -C $(CFG) -vm -m $(MAP)
+DEBUG		=	
 
 #===============================================================================
 # Rules
@@ -25,32 +20,34 @@ DEBUG		=	wdcdb.exe
 # Targets
 #-------------------------------------------------------------------------------
 
-OBJS	= \
-		w65c816sxb.obj \
-		sxb-hacker.obj
+CFG     = sxb-hacker.cfg
+MAP     = sxb-hacker.map
+BINS    = sxb-0x0300.bin sxb-0x7EE0.bin
+OBJS	= w65c816sxb.obj sxb-hacker.obj
+LSTS	= w65c816sxb.lst sxb-hacker.lst
 
-all:	sxb-hacker.bin
+all:	$(BINS)
 
 clean:
-		$(RM) $(OBJS)
-		$(RM) *.bin
-		$(RM) *.lst
+	$(RM) -f $(BINS) $(OBJS) $(LSTS) $(MAP)
 
 debug:
-		$(DEBUG)
+	$(DEBUG)
 
 #===============================================================================
 # Dependencies
 #-------------------------------------------------------------------------------
 
-sxb-hacker.bin: $(OBJS)
-		$(LD) $(LD_FLAGS) -O $@ $(OBJS)
+$(BINS): $(OBJS) $(CFG)
+	$(LD) $(LD_FLAGS) -o $@ $(OBJS)
+	cmp -b sxb-0x0300.bin wdc-unified.bin
 
-w65c816sxb.obj: \
-		w65c816.inc \
-		w65c816sxb.inc \
-		w65c816sxb.asm
+prog: $(BINS)
+	./sxb.py write 0x0300 sxb-0x0300.bin
+	./sxb.py write 0x7EE0 sxb-0x7EE0.bin
+	./sxb.py exec 0x0300
 
-sxb-hacker.obj: \
-		w65c816.inc \
-		sxb-hacker.asm
+w65c816sxb.obj: w65c816.inc w65c816sxb.inc w65c816sxb.asm
+sxb-hacker.obj: w65c816.inc sxb-hacker.asm
+
+.SUFFIXES: .asm .obj

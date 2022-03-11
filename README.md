@@ -18,6 +18,21 @@ Reprogramming the ROM must be done very carefully. If you erase the WDC ROM
 image in bank 3 then your will not be able to use the WDC TIDE tools to
 recover your system.
 
+## Conversion to use CC65 and friends
+
+The WDC tools are only available on Windows. They run under Wine but this is
+not available on recent versions of MacOS. The CC65 suite is being
+actively developed and is cross platform.
+
+The Makefile will generate two bin files, sxb-0x0300.bin and sxb-0x7EE0.bin.
+These contain the code/data and the shadow vectors respectively. The names
+indicate the RAM location that they are loaded to.
+
+The original code for the WDC tools have been moved into the "originals"
+directory. The "wdc-unified.bin" file contains the original code and data but
+has been stripped of the WDC headers and links. It is used to compare the
+CC65 generated file.
+
 ## UART Connections
 
 The hacking tool uses the ACIA to communicate with your PC and download new

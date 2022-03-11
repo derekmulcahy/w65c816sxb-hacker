@@ -1,26 +1,65 @@
-Section PAGE0:
-	00000020 _BEG_PAGE0
-	00000030 _END_PAGE0
+Modules list:
+-------------
+w65c816sxb.obj:
+    CODE              Offs=000000  Size=000000  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000000  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000000  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
+    STARTUP           Offs=000000  Size=00009B  Align=00001  Fill=0000
+    SHADOW            Offs=000000  Size=000020  Align=00001  Fill=0000
+sxb-hacker.obj:
+    CODE              Offs=000000  Size=000CCB  Align=00001  Fill=0000
+    RODATA            Offs=000000  Size=000000  Align=00001  Fill=0000
+    BSS               Offs=000000  Size=000100  Align=00001  Fill=0000
+    DATA              Offs=000000  Size=000000  Align=00001  Fill=0000
+    ZEROPAGE          Offs=000000  Size=000010  Align=00001  Fill=0000
+    NULL              Offs=000000  Size=000000  Align=00001  Fill=0000
 
-Section CODE:
-	00000300 _BEG_CODE
-	00000341 UartTx
-	00000362 UartRx
-	00000371 UartRxTest
-	0000037f RomSelect
-	00000395 RomCheck
-	0000039b Start
-	00001066 _END_CODE
 
-Section DATA:
-	00000200 _BEG_DATA
-	00000280 _END_DATA
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+DATA                  000000  000000  000000  00001
+NULL                  000000  000000  000000  00001
+RODATA                000000  000000  000000  00001
+ZEROPAGE              000000  00000F  000010  00001
+BSS                   000200  0002FF  000100  00001
+STARTUP               000300  00039A  00009B  00001
+CODE                  00039B  001065  000CCB  00001
+SHADOW                007EE0  007EFF  000020  00001
 
-Section shadowvectors:
-	00007ee0 _BEG_SHADOWVECTORS
-	00007f00 _END_SHADOWVECTORS
 
-Section vectors:
-	0000ffe0 _BEG_VECTORS
-	00010000 _END_VECTORS
+Exports list by name:
+---------------------
+RomCheck                  000395 RLA    RomSelect                 00037F RLA    
+Start                     00039B RLA    UartRx                    000362 RLA    
+UartRxTest                000371 RLA    UartTx                    000341 RLA    
+
+
+
+Exports list by value:
+----------------------
+UartTx                    000341 RLA    UartRx                    000362 RLA    
+UartRxTest                000371 RLA    RomSelect                 00037F RLA    
+RomCheck                  000395 RLA    Start                     00039B RLA    
+
+
+
+Imports list:
+-------------
+RomCheck (w65c816sxb.obj):
+    sxb-hacker.obj            sxb-hacker.asm:219
+RomSelect (w65c816sxb.obj):
+    sxb-hacker.obj            sxb-hacker.asm:218
+Start (sxb-hacker.obj):
+    w65c816sxb.obj            w65c816sxb.asm:57
+UartRx (w65c816sxb.obj):
+    sxb-hacker.obj            sxb-hacker.asm:215
+UartRxTest (w65c816sxb.obj):
+    sxb-hacker.obj            sxb-hacker.asm:217
+UartTx (w65c816sxb.obj):
+    sxb-hacker.obj            sxb-hacker.asm:216
 

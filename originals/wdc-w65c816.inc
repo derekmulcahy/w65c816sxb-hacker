@@ -33,15 +33,15 @@
 ; Status Register Bits
 ;------------------------------------------------------------------------------
 
-N_FLAG          =     1<<7
-V_FLAG          =     1<<6
-M_FLAG          =     1<<5
-X_FLAG          =     1<<4
-B_FLAG          =     1<<4
-D_FLAG          =     1<<3
-I_FLAG          =     1<<2
-Z_FLAG          =     1<<1
-C_FLAG          =     1<<0
+N_FLAG          equ     1<<7
+V_FLAG          equ     1<<6
+M_FLAG          equ     1<<5
+X_FLAG          equ     1<<4
+B_FLAG          equ     1<<4
+D_FLAG          equ     1<<3
+I_FLAG          equ     1<<2
+Z_FLAG          equ     1<<1
+C_FLAG          equ     1<<0
 
 ;==============================================================================
 ; Macros
@@ -50,61 +50,61 @@ C_FLAG          =     1<<0
 ; Puts the processor in emulation mode. A, X and Y become 8-bits and the stack
 ; is fixed at $0100-$01ff. 
 
-.macro          emulate
+emulate         macro
                 sec
                 xce
-.endmacro
+                endm
 
 ; Puts the processor in native mode. The size of the memory and index register
 ; operations is not controlled by the M & X bits in the status register.
 
-.macro          native
+native          macro
                 clc
                 xce
-.endmacro
+                endm
 
 ; Resets the M bit making the accumulator and memory accesses 16-bits wide.
  
-.macro          long_a
+long_a          macro
                 rep     #M_FLAG
-                .a16
-.endmacro
+                longa   on
+                endm
 
 ; Resets the X bit making the index registers 16-bits wide
 
-.macro          long_i
+long_i          macro
                 rep     #X_FLAG
-                .i16
-.endmacro
+                longi   on
+                endm
 
 ; Resets the M and X bits making the accumulator, memory accesses and index
 ; registers 16-bits wide.
                 
-.macro          long_ai
+long_ai         macro
                 rep     #M_FLAG|X_FLAG
-                .a16
-                .i16
-.endmacro
+                longa   on
+                longi   on
+                endm
 
 ; Sets the M bit making the accumulator and memory accesses 8-bits wide.
 
-.macro          short_a
+short_a         macro
                 sep     #M_FLAG
-                .a8
-.endmacro
+                longa   off
+                endm
 
 ; Sets the X bit making the index registers 8-bits wide.
 
-.macro          short_i
+short_i         macro
                 sep     #X_FLAG
-                .i8
-.endmacro
+                longi   off
+                endm
                 
 ; Sets the M & X bits making the accumulator, memory accesses and index
 ; registers 8-bits wide.
 
-.macro          short_ai
+short_ai        macro
                 sep     #M_FLAG|X_FLAG
-                .a8
-                .i8
-.endmacro
+                longa   off
+                longi   off
+                endm
