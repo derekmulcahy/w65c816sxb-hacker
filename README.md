@@ -33,6 +33,9 @@ directory. The "wdc-unified.bin" file contains the original code and data but
 has been stripped of the WDC headers and links. It is used to compare the
 CC65 generated file.
 
+The original for the sxb.py tool was developed by Karl Ljungkvist and can
+be found at https://github.com/kalj/sxb
+
 ## UART Connections
 
 The hacking tool uses the ACIA to communicate with your PC and download new
