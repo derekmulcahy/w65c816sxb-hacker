@@ -20,21 +20,27 @@ recover your system.
 
 ## Conversion to use CC65 and friends
 
-The WDC tools are only available on Windows. They run under Wine but this is
-not available on recent versions of MacOS. The CC65 suite is being
+The WDC tools are only available on Windows. The CC65 suite is being
 actively developed and is cross platform.
 
 The Makefile will generate two bin files, sxb-0x0300.bin and sxb-0x7EE0.bin.
 These contain the code/data and the shadow vectors respectively. The names
 indicate the RAM location that they are loaded to.
 
+The original for the sxb.py tool was developed by Karl Ljungkvist and can
+be found at https://github.com/kalj/sxb
+
 The original code for the WDC tools have been moved into the "originals"
 directory. The "wdc-unified.bin" file contains the original code and data but
 has been stripped of the WDC headers and links. It is used to compare the
 CC65 generated file.
 
-The original for the sxb.py tool was developed by Karl Ljungkvist and can
-be found at https://github.com/kalj/sxb
+The original WDC style binary can be found in originals/wdc-sxb-hacker.bin and
+can be programmed and executed by using
+
+```shell
+python3 sxb.py wdc -e 0x0300 originals/wdc-sxb-hacker.bin
+```
 
 ## UART Connections
 
