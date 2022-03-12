@@ -36,7 +36,10 @@
 ; Configuration
 ;-------------------------------------------------------------------------------
 
-USE_FIFO        =     0                       ; Build using USB FIFO as UART
+; USE_FIFO        =     0                     ; Build using USB FIFO as UART
+
+                .if !USE_FIFO                 ; Need to configure ACIA when
+                                              ; USB FIFO is not enabled.
 
 BAUD_RATE       =     19200                   ; ACIA baud rate
 
@@ -46,6 +49,8 @@ TXD_COUNT       =     OSC_FREQ/(BAUD_RATE/11)
 
                 .if      TXD_COUNT&$ffff0000
                 messg   "TXD_DELAY does not fit in 16-bits"
+                .endif
+
                 .endif
 
 ;===============================================================================
@@ -141,7 +146,7 @@ ABORT:
 ; Add the character in A to the FTDI USB FIFO transmit buffer. If the buffer
 ; is full wait for space to become available.
 
-                public  UartTx
+                .export  UartTx
 UartTx:
                 phx
                 php
@@ -173,8 +178,8 @@ TxWait:         bit     VIA2_IRB                ; Is there space for more data
 ; Read a character from the FTDI USB FIFO and return it in A. If no data is
 ; available then wait for some to arrive.
 
-                public  UartRx
-UartRx
+                .export  UartRx
+UartRx:
                 phx                             ; Save callers X
                 php                             ; Save register sizes
                 short_ai                        ; Make registers 8-bit
@@ -200,7 +205,7 @@ RxWait:         bit     VIA2_IRB
 ; Check if the receive buffer in the FIFO contains any data and return C=1 if
 ; there is some.
 
-                public  UartRxTest
+                .export  UartRxTest
 UartRxTest:
                 pha                             ; Save callers A
                 php                             ; Save register sizes

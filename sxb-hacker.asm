@@ -182,8 +182,6 @@ MD_IMX          =     24<<1                   ; # (X or Y)
 
                  .segment "ZEROPAGE"
 
-                 .org     $20
-
 FLAGS:           .res      1                       ; Emulated processor flags
 BUFLEN:          .res      1                       ; Command buffer length
 BANK:            .res      1                       ; Memory bank
@@ -199,17 +197,13 @@ TEMP:            .res      4                       ; Scratch workspace
 
                  .segment "BSS"
 
-                 .org      $0200
-
-BUFFER:          .res      256                     ; Command buffer
+BUFFER:          .res      128                     ; Command buffer
 
 ;===============================================================================
 ; Initialisation
 ;-------------------------------------------------------------------------------
 
                 .segment "CODE"
-
-                .org $039b
 
                 .export  Start
                 .import  UartRx
@@ -689,7 +683,6 @@ NotROMBank:
                 bcs     S19Fail
                 lda     ADDR_E                  ; Use as initial checksum
                 sta     SUM
-                dec     ADDR_E                  ; REMOVE!!!
                 ; Byte count not included in the S19 byte count field
                 beq     S19Fail
 
@@ -1009,7 +1002,7 @@ CheckSafe:
 ; by the X register.
 
 GetByte:
-                stz     a:0,x                   ; REMOVE a: Set the target address
+                stz     0,x                   ; Set the target address
                 jsr     SkipSpaces              ; Skip to first real character
                 bcc     *+3
                 rts                             ; None found
@@ -1030,10 +1023,10 @@ ByteFail:       sec
 ; by the X register.
 
 GetAddr:
-                stz     a:0,x                   ; REMOVE a: Set the target address
-                stz     a:1,x                   ; REMOVE a: 
+                stz     0,x                     ; Set the target address
+                stz     1,x
                 lda     BANK
-                sta     a:2,x                   ; REMOVE a: 
+                sta     2,x
                 jsr     SkipSpaces              ; Skip to first real character
                 bcc     *+3
                 rts                             ; None found
@@ -1071,17 +1064,17 @@ AddDigit:
                 bcc     *+4
                 sbc     #7
 
-                asl     a:0,x                     ; Shift up one nybble
-                rol     a:1,x
-                asl     a:0,x
-                rol     a:1,x
-                asl     a:0,x
-                rol     a:1,x
-                asl     a:0,x
-                rol     a:1,x
+                asl     0,x                     ; Shift up one nybble
+                rol     1,x
+                asl     0,x
+                rol     1,x
+                asl     0,x
+                rol     1,x
+                asl     0,x
+                rol     1,x
 
-                ora     a:0,x                     ; Merge in new digit
-                sta     a:0,x                     ; .. and save
+                ora     0,x                     ; Merge in new digit
+                sta     0,x                     ; .. and save
                 rts
 
 ;===============================================================================
@@ -1231,7 +1224,7 @@ HexToAscii:
                 .a8
                 .i16
 TxStr:
-                lda     a:0,x                     ; Fetch the next character
+                lda     0,x                     ; Fetch the next character
                 bne     *+3                     ; Return it end of string
                 rts
                 jsr     UartTx                  ; Otherwise print it
@@ -1873,7 +1866,7 @@ TITLE:          .byte      CR,LF
                 .else
                 .byte      "W65C816SXB"
                 .endif
-                .byte      "-Hacker [18.06]",0
+                .byte      "-Hacker [22.03.11]",0
 
 ERROR:          .byte      CR,LF,"Error - Type ? for help",0
 

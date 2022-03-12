@@ -23,17 +23,16 @@ recover your system.
 The WDC tools are only available on Windows. The CC65 suite is being
 actively developed and is cross platform.
 
-The Makefile will generate two bin files, sxb-0x0300.bin and sxb-0x7EE0.bin.
-These contain the code/data and the shadow vectors respectively. The names
-indicate the RAM location that they are loaded to.
+The Makefile will generate several bin files named sxb-0xXXXX.bin.
+These contain the code/data and the shadow vectors. The names indicate
+the RAM location that they are loaded to. This a substitute for the WDC
+binary files which contain offsets and sizes for several segments.
 
 The original for the sxb.py tool was developed by Karl Ljungkvist and can
 be found at https://github.com/kalj/sxb
 
 The original code for the WDC tools have been moved into the "originals"
-directory. The "wdc-unified.bin" file contains the original code and data but
-has been stripped of the WDC headers and links. It is used to compare the
-CC65 generated file.
+directory. 
 
 The original WDC style binary can be found in originals/wdc-sxb-hacker.bin and
 can be programmed and executed by using
@@ -55,13 +54,17 @@ You also need a terminal program like AlphaCom or Tera Term on your PC that
 supports XMODEM file transfers. Configure it to work at 19200 baud, 8 data
 bits, no parity and 1 stop bit.
 
+The tool can also use the FT245 USB FIFO as a serial interface. This is
+significantly faster and more reliable than the ACIA.
+Define USE_FIFO=1 in the Makefile before building to enable the FT245.
+
 ## Using W65C816SXB-Hacker
 
-Use the WDC debugger to download the hacking tool to the SXB board and start
-execution. The tool will respond with a message in the terminal software.
+Use sxb.py to download the hacking tool to the SXB board and start execution.
+The tool will respond with a message in the terminal software.
 
 ```
-W65C816SXB-Hacker [15.11]
+W65C816SXB-Hacker [22.03.11]
 .
 ```
 The 'M' command allows you to display memory, for example 'M FFE0 FFFF' will
