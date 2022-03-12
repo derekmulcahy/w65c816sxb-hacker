@@ -8,7 +8,7 @@ import sys
 import time
 import os
 
-SBC_DEVICE = os.environ.get("SBC_DEVICE") if "SBC_DEVICE" in os.environ else "/dev/ttyUSB0"
+SXB_DEVICE = os.environ.get("SXB_DEVICE") if "SXB_DEVICE" in os.environ else "/dev/ttyUSB0"
 
 STATE_ADDRESS = 0x7e00
 
@@ -127,7 +127,7 @@ def format_table(data,offset=0):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--device', help='Serial device', default=SBC_DEVICE)
+    parser.add_argument('-d', '--device', help='Serial device', default=SXB_DEVICE)
 
     subparsers = parser.add_subparsers(dest='command',required=True,metavar='command')
 
