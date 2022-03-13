@@ -691,7 +691,7 @@ NotROMBank:
                 bcs     S19Fail
 				
                 bit     ADDR_S+1                ; Load into ROM area?
-                bpl     $+5
+                bpl     *+5
                 jsr     CheckSafe               ; Yes, check selection
 				
                 lda     ADDR_S+0                ; Add to checksum
