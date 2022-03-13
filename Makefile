@@ -21,7 +21,7 @@ LD_FLAGS    =  -C $(CFG) -vm -m $(MAP)
 
 CFG     = sxb-hacker.cfg
 MAP     = sxb-hacker.map
-SREC	= sxb-hacker.srec
+SREC	= sxb-hacker.s28
 BINS    = sxb-0x0200.bin sxb-0x0300.bin sxb-0x7EE0.bin
 OBJS	= w65c816sxb.obj sxb-hacker.obj
 LSTS	= w65c816sxb.lst sxb-hacker.lst
@@ -52,7 +52,9 @@ prog: $(BINS)
 
 $(SREC): $(BINS)
 	srec_cat  -o $(SREC)\
-		-execution_start_address 0x0300 -address-length 2\
+		-data-only\
+		-execution_start_address 0x0300\
+		-address-length 2 -line-length 47\
 		sxb-0x0200.bin -binary -offset 0x0200\
 		sxb-0x0300.bin -binary -offset 0x0300\
 		sxb-0x7EE0.bin -binary -offset 0x7EE0

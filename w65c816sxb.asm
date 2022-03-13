@@ -57,7 +57,7 @@ TXD_COUNT       =     OSC_FREQ/(BAUD_RATE/11)
 ; Power On Reset
 ;-------------------------------------------------------------------------------
 
-.segment "STARTUP"
+                .segment "CODE"
 
                 .import  Start
                 .i8
